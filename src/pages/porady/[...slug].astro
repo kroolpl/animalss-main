@@ -7,11 +7,11 @@ export async function getStaticPaths() {
   const porady = await getCollection('porady');
   return porady.map(entry => ({
     params: { slug: entry.slug },
-    props: { entry },
+    props: { entry, recommendations: porady.filter(p => p.slug !== entry.slug).slice(0, 3) },
   }));
 }
 
-const { entry } = Astro.props;
+const { entry, recommendations } = Astro.props;
 const { Content } = await entry.render();
 ---
 
@@ -61,6 +61,41 @@ const { Content } = await entry.render();
           
           <div class="prose prose-lg mx-auto">
             <Content />
+          </div>
+
+          <!-- Recommended Articles -->
+          <div class="mt-16 pt-16 border-t border-primary-100">
+            <h2 class="text-3xl font-bold text-primary-900 mb-8 text-center">Polecane artykuły</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {recommendations.map((article) => (
+                <a 
+                  href={`/porady/${article.slug}`}
+                  class="group block bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300"
+                >
+                  {article.data.image && (
+                    <div class="aspect-[16/9] overflow-hidden">
+                      <Image 
+                        src={article.data.image}
+                        alt={article.data.title}
+                        width={400}
+                        height={225}
+                        class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-300"
+                        format="webp"
+                        quality={80}
+                      />
+                    </div>
+                  )}
+                  <div class="p-6">
+                    <h3 class="font-bold text-lg text-primary-900 mb-2 group-hover:text-accent-500 transition-colors">
+                      {article.data.title}
+                    </h3>
+                    <p class="text-primary-600 text-sm line-clamp-2">
+                      {article.data.excerpt}
+                    </p>
+                  </div>
+                </a>
+              ))}
+            </div>
           </div>
         </div>
       </div>

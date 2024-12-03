@@ -235,7 +235,7 @@ const { title, description } = Astro.props;
                 <div class="pt-8 border-t border-primary-800">
                     <div class="flex flex-col md:flex-row justify-between items-center gap-4">
                         <p class="text-primary-300 text-sm">
-                            © 2024 ANIMALS. Wszelkie prawa zastrzeżone.
+                            &copy; 2024 ANIMALS. Wszelkie prawa zastrzeżone.
                         </p>
                     </div>
                 </div>
@@ -272,18 +272,22 @@ const { title, description } = Astro.props;
                 button.parentNode?.replaceChild(newButton, button);
                 console.log('Replaced old button with new button');
 
+                function closeMenu() {
+                    console.log('Closing menu...');
+                    menu.classList.add('hidden');
+                    menuIcon.classList.remove('hidden');
+                    closeIcon.classList.add('hidden');
+                    newButton.setAttribute('aria-expanded', 'false');
+                    document.body.style.overflow = '';
+                }
+
                 function toggleMenu() {
                     console.log('Toggle menu clicked');
                     const isExpanded = newButton.getAttribute('aria-expanded') === 'true';
                     console.log('Menu is expanded:', isExpanded);
                     
                     if (isExpanded) {
-                        console.log('Closing menu...');
-                        menu.classList.add('hidden');
-                        menuIcon.classList.remove('hidden');
-                        closeIcon.classList.add('hidden');
-                        newButton.setAttribute('aria-expanded', 'false');
-                        document.body.style.overflow = '';
+                        closeMenu();
                     } else {
                         console.log('Opening menu...');
                         menu.classList.remove('hidden');
