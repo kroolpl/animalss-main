@@ -1,0 +1,46 @@
+---
+import { Image } from 'astro:assets';
+import FloatingElements from './FloatingElements.astro';
+import type { ImageMetadata } from 'astro';
+
+interface Props {
+    title: string;
+    description?: string;
+    titleAccent?: string;
+    image?: ImageMetadata;
+    primaryButton?: {
+        text: string;
+        href: string;
+    };
+    secondaryButton?: {
+        text: string;
+        href: string;
+    };
+}
+
+const { title, description, titleAccent } = Astro.props;
+---
+
+<div class="relative overflow-hidden">
+    <!-- Background elements with parallax -->
+    <div class="absolute inset-0 bg-gradient-to-b from-primary-900 to-primary-800 parallax-bg"></div>
+    <div class="absolute inset-0 bg-[url('/pattern.svg')] opacity-5 parallax-bg"></div>
+    <div class="absolute top-20 right-20 w-64 h-64 bg-accent-500/10 rounded-full blur-3xl parallax-bg"></div>
+    <div class="absolute bottom-10 left-10 w-96 h-96 bg-primary-700/20 rounded-full blur-3xl parallax-bg"></div>
+
+    <!-- Content with subtle parallax -->
+    <div class="container mx-auto px-4 py-24 relative">
+        <div class="parallax-content">
+            <h1 class="font-display text-5xl md:text-6xl font-bold text-center text-white mb-6">
+                {title}
+                {titleAccent && <span class="text-accent-400">{titleAccent}</span>}
+            </h1>
+            {description && (
+                <p class="text-center text-primary-100 max-w-2xl mx-auto text-lg">
+                    {description}
+                </p>
+            )}
+            <slot />
+        </div>
+    </div>
+</div> 

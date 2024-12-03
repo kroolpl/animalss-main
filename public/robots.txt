@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://animals.glogow.pl/sitemap-index.xml 

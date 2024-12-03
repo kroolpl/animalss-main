@@ -1,0 +1,82 @@
+---
+---
+<div class="absolute inset-0 pointer-events-none overflow-hidden">
+    <!-- Top row -->
+    <div class="pet-element absolute top-[25%] left-[10%] w-8 h-8 text-3xl" style="--delay: 0s; --duration: 7.5s">🐕</div>
+    <div class="pet-element absolute top-[30%] right-[15%] w-8 h-8 text-3xl" style="--delay: 1.5s; --duration: 8.2s">🐱</div>
+    
+    <!-- Middle row -->
+    <div class="pet-element absolute top-[45%] left-[25%] w-8 h-8 text-3xl" style="--delay: 0.8s; --duration: 6.8s">🐰</div>
+    <div class="pet-element absolute top-[50%] right-[30%] w-8 h-8 text-3xl" style="--delay: 2.1s; --duration: 7.8s">🦜</div>
+    
+    <!-- Bottom row -->
+    <div class="pet-element absolute bottom-[20%] left-[20%] w-8 h-8 text-3xl" style="--delay: 1.2s; --duration: 8.5s">🐾</div>
+    <div class="pet-element absolute bottom-[25%] right-[25%] w-8 h-8 text-3xl" style="--delay: 0.5s; --duration: 7.2s">🐹</div>
+    <div class="pet-element absolute bottom-[30%] left-[40%] w-8 h-8 text-3xl" style="--delay: 1.8s; --duration: 6.5s">🦮</div>
+</div>
+
+<style>
+    .pet-element {
+        opacity: 0.6;
+        animation: float-around var(--duration) ease-in-out infinite;
+        animation-delay: var(--delay);
+    }
+
+    @keyframes float-around {
+        0% {
+            transform: translate(0, 0) rotate(0deg);
+        }
+        25% {
+            transform: translate(15px, -20px) rotate(8deg);
+        }
+        50% {
+            transform: translate(-5px, -35px) rotate(-5deg);
+        }
+        75% {
+            transform: translate(-20px, -15px) rotate(3deg);
+        }
+        100% {
+            transform: translate(0, 0) rotate(0deg);
+        }
+    }
+</style>
+
+<script>
+    function setupPetInteractions() {
+        const pets = document.querySelectorAll<HTMLElement>('.pet-element');
+        
+        pets.forEach(pet => {
+            pet.style.animationDelay = `${Math.random() * 2}s`;
+            
+            pet.addEventListener('mouseover', (e: MouseEvent) => {
+                const jumpHeight = Math.random() * 20 + 20;
+                const rotation = (Math.random() - 0.5) * 40;
+                
+                (e.currentTarget as HTMLElement).style.transform = `translateY(-${jumpHeight}px) rotate(${rotation}deg) scale(1.4)`;
+                (e.currentTarget as HTMLElement).style.opacity = '1';
+            });
+
+            pet.addEventListener('mouseout', (e: MouseEvent) => {
+                (e.currentTarget as HTMLElement).style.transform = '';
+                (e.currentTarget as HTMLElement).style.opacity = '0.6';
+            });
+
+            pet.addEventListener('click', (e: MouseEvent) => {
+                const target = e.currentTarget as HTMLElement;
+                target.style.transform = 'scale(0.8)';
+                setTimeout(() => {
+                    target.style.transform = 'scale(1.6)';
+                }, 150);
+                setTimeout(() => {
+                    target.style.transform = '';
+                }, 300);
+            });
+        });
+    }
+
+    // Setup on initial load
+    setupPetInteractions();
+
+    // Re-setup after view transitions
+    document.addEventListener('astro:page-load', setupPetInteractions);
+</script> 
