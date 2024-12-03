@@ -11,11 +11,25 @@ import cat2Image from '../assets/testimonials/cat2.jpg';
 
 const pageTitle = "ANIMALS - sklep zoologiczny Głogów | Najlepsza karma dla zwierząt";
 const pageDescription = "Oferujemy najwyższej jakości karmę dla psów i kotów w Głogowie. Profesjonalne doradztwo, szeroki wybór karm premium i akcesoriów dla Twojego pupila!";
+
+const schema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "ANIMALS",
+    "url": "https://animals.glogow.pl",
+    "description": "Dostarczamy najwyższej jakości karmę i akcesoria dla Twojego pupila.",
+    "potentialAction": {
+        "@type": "SearchAction",
+        "target": "https://animals.glogow.pl/?s={search_term_string}",
+        "query-input": "required name=search_term_string"
+    }
+});
 ---
 
 <Layout 
     title={pageTitle}
     description={pageDescription}
+    schema={schema}
 >
     <!-- Hero Section -->
     <div class="relative overflow-hidden bg-gradient-to-b from-primary-900 to-primary-800">

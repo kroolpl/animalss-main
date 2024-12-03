@@ -2,16 +2,22 @@
 import Layout from '../layouts/Layout.astro';
 import Hero from '../components/Hero.astro';
 
-// Add types for form data
-interface FormData {
-    name: string;
-    email: string;
-    subject: string;
-    message: string;
-}
+const schema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ContactPage",
+    "name": "Kontakt - ANIMALS",
+    "description": "Skontaktuj się z nami, aby uzyskać więcej informacji o naszych produktach.",
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+48 886 147 831",
+        "contactType": "Customer Service",
+        "areaServed": "PL",
+        "availableLanguage": "Polish"
+    }
+});
 ---
 
-<Layout title="Kontakt - ANIMALS">
+<Layout title="Kontakt - ANIMALS" description="Skontaktuj się z nami, aby uzyskać więcej informacji." schema={schema}>
 	<Hero 
 		title="Kontakt"
 		description="Jesteśmy tutaj, aby odpowiedzieć na Twoje pytania i pomóc w wyborze najlepszej karmy dla Twojego pupila."
