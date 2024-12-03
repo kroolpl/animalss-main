@@ -74,66 +74,43 @@ const pageDescription = "Praktyczne wskazówki i profesjonalne porady dotyczące
                         sortedPorady.map((porada, index) => (
                             <article 
                                 class={`group relative ${index === 0 ? 'md:col-span-2 lg:col-span-3' : ''}`}
-                                style={`animation: fadeInUp 0.6s ease-out ${index * 0.15}s both;`}
                                 aria-labelledby={`article-${porada.slug}`}
                             >
-                                <div class="absolute inset-0 bg-gradient-to-br from-accent-500/5 to-primary-500/5 rounded-[2rem] blur-xl transform group-hover:scale-105 transition-transform duration-500"></div>
                                 <a href={`/porady/${porada.slug}`} 
-                                   class={`block h-full bg-white/80 backdrop-blur-md rounded-[2rem] shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden relative
+                                   class={`block h-full bg-white rounded-2xl shadow hover:shadow-lg transition-all duration-300 overflow-hidden relative
                                           ${index === 0 ? 'lg:grid lg:grid-cols-2 lg:gap-8' : 'flex flex-col'}`}
                                 >
-                                    <div class={`relative overflow-hidden ${index === 0 ? 'lg:rounded-l-[2rem] aspect-[16/9] lg:aspect-auto' : 'rounded-t-[2rem] aspect-[16/10]'}`}>
+                                    <div class={`relative overflow-hidden ${index === 0 ? 'lg:rounded-l-2xl aspect-[16/9] lg:aspect-auto' : 'rounded-t-2xl aspect-[16/10]'}`}>
                                         {porada.data.image && (
                                             <Image 
                                                 src={porada.data.image}
                                                 alt={porada.data.title}
-                                                width={index === 0 ? 1200 : 800}
-                                                height={index === 0 ? 800 : 450}
-                                                class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700"
+                                                width={800}
+                                                height={400}
+                                                class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
                                                 transition:name={`image-${porada.slug}`}
                                                 format="webp"
-                                                quality={90}
-                                                loading={index === 0 ? "eager" : "lazy"}
+                                                quality={80}
                                             />
-                                            <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
                                         )}
                                     </div>
-                                    <div class={`p-8 lg:p-10 flex flex-col ${index === 0 ? 'lg:justify-center' : ''}`}>
-                                        <div class="flex items-center gap-4 mb-6 flex-wrap">
-                                            <time 
-                                                datetime={new Date(porada.data.date).toISOString()}
-                                                class="text-sm font-medium bg-primary-100/80 text-primary-700 px-4 py-1.5 rounded-full backdrop-blur-sm group-hover:bg-primary-200/80 transition-colors"
-                                            >
-                                                {new Date(porada.data.date).toLocaleDateString('pl-PL', {
-                                                    day: 'numeric',
-                                                    month: 'long',
-                                                    year: 'numeric'
-                                                })}
-                                            </time>
-                                            <span class="text-sm text-primary-600 font-medium flex items-center gap-2" aria-label={`Autor: ${porada.data.author}`}>
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
-                                                    <path fill-rule="evenodd" d="M10 9a3 3 0 100-6 3 3 0 000 6zm-7 9a7 7 0 1114 0H3z" clip-rule="evenodd" />
-                                                </svg>
-                                                {porada.data.author}
-                                            </span>
-                                        </div>
+                                    <div class="p-6 flex flex-col flex-grow">
                                         <h2 
                                             id={`article-${porada.slug}`}
-                                            class={`font-bold mb-4 text-primary-900 group-hover:text-accent-500 transition-colors duration-300
-                                                   ${index === 0 ? 'text-3xl lg:text-4xl' : 'text-2xl'}`}
+                                            class="text-xl font-bold text-primary-900 mb-2 transition-colors duration-300 group-hover:text-accent-500"
+                                            transition:name={`title-${porada.slug}`}
                                         >
-                                            <span transition:name={`title-${porada.slug}`}>{porada.data.title}</span>
+                                            {porada.data.title}
                                         </h2>
-                                        <p class={`text-primary-600 line-clamp-3 mb-6 ${index === 0 ? 'lg:text-lg' : ''}`}>
-                                            {porada.data.excerpt}
-                                        </p>
-                                        <div class="mt-auto">
-                                            <span class="inline-flex items-center gap-2 text-accent-500 font-medium group-hover:gap-3 transition-all">
-                                                Czytaj więcej
-                                                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4 transform group-hover:translate-x-1 transition-transform" viewBox="0 0 20 20" fill="currentColor">
-                                                    <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                                </svg>
-                                            </span>
+                                        <p class="text-primary-600 mb-4 line-clamp-2">{porada.data.excerpt}</p>
+                                        <div class="mt-auto flex items-center gap-4 text-sm text-primary-500">
+                                            <time>{new Date(porada.data.date).toLocaleDateString('pl-PL', {
+                                                day: 'numeric',
+                                                month: 'long',
+                                                year: 'numeric'
+                                            })}</time>
+                                            <span class="w-1 h-1 bg-primary-300 rounded-full"></span>
+                                            <span>{porada.data.author}</span>
                                         </div>
                                     </div>
                                 </a>
@@ -154,37 +131,7 @@ const pageDescription = "Praktyczne wskazówki i profesjonalne porady dotyczące
 </Layout>
 
 <style>
-    @keyframes fadeInUp {
-        from {
-            opacity: 0;
-            transform: translateY(30px);
-        }
-        to {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
-    .animate-fade-in {
-        animation: fadeIn 0.8s ease-out;
-    }
-
-    @keyframes fadeIn {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
-        }
-    }
-
-    .background-mesh {
-        background-image: radial-gradient(circle at center, rgba(255,255,255,0.1) 1px, transparent 1px);
-        background-size: 20px 20px;
-
-    }
-
-	@keyframes float {
+    @keyframes float {
     0%, 100% {
         transform: translateY(0);
     }

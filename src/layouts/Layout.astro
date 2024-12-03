@@ -19,323 +19,433 @@ const { title, description } = Astro.props;
         <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
         <meta name="generator" content={Astro.generator} />
         <title>{title}</title>
-        <ViewTransitions />
+        <ViewTransitions fallback="swap" />
         <link rel="sitemap" href="/sitemap-index.xml" />
     </head>
     <body class="antialiased">
-        <!-- Header/Navbar -->
-        <header class="fixed top-0 left-0 right-0 z-40">
-            <div class="bg-gradient-to-br from-primary-900 to-primary-800 backdrop-blur-sm shadow-lg">
-                <nav class="container mx-auto px-4 py-2">
-                    <div class="flex items-center justify-between">
-                        <a href="/" class="flex items-center gap-3 relative z-50">
-                            <div class="relative p-1">
-                                <img 
-                                    src="/images/logo.png" 
-                                    alt="ANIMALS Logo" 
-                                    class="h-12 w-auto object-contain"
-                                />
-                            </div>
-                            <span class="text-xl sm:text-2xl font-display font-extrabold tracking-wide text-white">
-                                ANIMALS
-                            </span>
-                        </a>
+        <div class="flex min-h-screen flex-col">
+            <!-- Header/Navbar -->
+            <header class="fixed top-0 left-0 right-0 z-40" transition:persist>
+                <div class="bg-gradient-to-br from-primary-900 to-primary-800 backdrop-blur-sm shadow-lg">
+                    <nav class="container mx-auto px-4 py-2">
+                        <div class="flex items-center justify-between">
+                            <a href="/" class="flex items-center gap-3 relative z-50">
+                                <div class="relative p-1">
+                                    <img 
+                                        src="/images/logo.png" 
+                                        alt="ANIMALS Logo" 
+                                        class="h-12 w-auto object-contain"
+                                    />
+                                </div>
+                                <span class="text-xl sm:text-2xl font-display font-extrabold tracking-wide text-white">
+                                    ANIMALS
+                                </span>
+                            </a>
 
-                        <!-- Desktop Navigation -->
-                        <div class="hidden lg:flex items-center gap-6">
-                            <nav class="flex items-center gap-6">
-                                <a href="/" class="text-primary-100 hover:text-white transition-all duration-300 px-3 py-2 rounded-lg hover:bg-white/10">
-                                    Strona główna
-                                </a>
-                                <a href="/produkty" class="text-primary-100 hover:text-white transition-all duration-300 px-3 py-2 rounded-lg hover:bg-white/10">
-                                    Produkty
-                                </a>
-                                <a href="/kwalifikacje" class="text-primary-100 hover:text-white transition-all duration-300 px-3 py-2 rounded-lg hover:bg-white/10">
-                                    Kwalifikacje
-                                </a>
-                                <a href="/porady" class="text-primary-100 hover:text-white transition-all duration-300 px-3 py-2 rounded-lg hover:bg-white/10">
-                                    Porady
-                                </a>
-                            </nav>
-                            
-                            <div class="flex items-center gap-4 pl-4 border-l border-white/10">
-                                <a 
-                                    href="https://www.facebook.com/profile.php?id=61554985716749" 
-                                    target="_blank" 
-                                    rel="noopener noreferrer" 
-                                    class="flex items-center gap-2 px-4 py-2 bg-[#1877F2] text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0d6efd]/90"
-                                >
-                                    <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
-                                    </svg>
-                                    <span class="font-medium">Obserwuj</span>
-                                </a>
-                                <a 
-                                    href="/kontakt" 
-                                    class="flex items-center gap-2 px-4 py-2 bg-accent-500 text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-600"
-                                >
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                                    </svg>
-                                    <span class="font-medium">Kontakt</span>
-                                </a>
+                            <!-- Desktop Navigation -->
+                            <div class="hidden lg:flex items-center gap-6">
+                                <nav class="flex items-center gap-6">
+                                    <a href="/" class="text-primary-100 hover:text-white transition-all duration-300 px-3 py-2 rounded-lg hover:bg-white/10">
+                                        Strona główna
+                                    </a>
+                                    <a href="/produkty" class="text-primary-100 hover:text-white transition-all duration-300 px-3 py-2 rounded-lg hover:bg-white/10">
+                                        Produkty
+                                    </a>
+                                    <a href="/kwalifikacje" class="text-primary-100 hover:text-white transition-all duration-300 px-3 py-2 rounded-lg hover:bg-white/10">
+                                        Kwalifikacje
+                                    </a>
+                                    <a href="/porady" class="text-primary-100 hover:text-white transition-all duration-300 px-3 py-2 rounded-lg hover:bg-white/10">
+                                        Porady
+                                    </a>
+                                </nav>
+                                
+                                <div class="flex items-center gap-4 pl-4 border-l border-white/10">
+                                    <a 
+                                        href="https://www.facebook.com/profile.php?id=61554985716749" 
+                                        target="_blank" 
+                                        rel="noopener noreferrer" 
+                                        class="flex items-center gap-2 px-4 py-2 bg-[#1877F2] text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0d6efd]/90"
+                                    >
+                                        <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+                                            <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
+                                        </svg>
+                                        <span class="font-medium">Obserwuj</span>
+                                    </a>
+                                    <a 
+                                        href="/kontakt" 
+                                        class="flex items-center gap-2 px-4 py-2 bg-accent-500 text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-600"
+                                    >
+                                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                        </svg>
+                                        <span class="font-medium">Kontakt</span>
+                                    </a>
+                                </div>
                             </div>
+
+                            <!-- Mobile Menu Button -->
+                            <button 
+                                id="mobile-menu-button" 
+                                class="lg:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors relative z-50"
+                                aria-label="Menu"
+                                aria-expanded="false"
+                            >
+                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path class="mobile-menu-icon block" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                                    <path class="mobile-menu-close hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                </svg>
+                            </button>
                         </div>
+                    </nav>
+                </div>
 
-                        <!-- Mobile Menu Button -->
-                        <button 
-                            id="mobile-menu-button" 
-                            class="lg:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors relative z-50"
-                            aria-label="Menu"
-                            aria-expanded="false"
-                        >
-                            <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path class="mobile-menu-icon block" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                                <path class="mobile-menu-close hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
-                            </svg>
-                        </button>
-                    </div>
-                </nav>
-            </div>
-
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" 
-                 class="fixed inset-x-0 top-[64px] bg-gradient-to-b from-primary-900/95 to-primary-800/95 backdrop-blur-md lg:hidden hidden p-4 shadow-lg z-50"
-            >
-                <nav class="space-y-4">
-                    <a href="/" class="block w-full px-4 py-3 text-primary-100 hover:text-white hover:bg-white/10 rounded-xl transition-colors">
-                        Strona główna
-                    </a>
-                    <a href="/produkty" class="block w-full px-4 py-3 text-primary-100 hover:text-white hover:bg-white/10 rounded-xl transition-colors">
-                        Produkty
-                    </a>
-                    <a href="/kwalifikacje" class="block w-full px-4 py-3 text-primary-100 hover:text-white hover:bg-white/10 rounded-xl transition-colors">
-                        Kwalifikacje
-                    </a>
-                    <a href="/porady" class="block w-full px-4 py-3 text-primary-100 hover:text-white hover:bg-white/10 rounded-xl transition-colors">
-                        Porady
-                    </a>
-                    <!-- Social and Contact buttons -->
-                    <div class="pt-4 flex flex-col items-start gap-3">
-                        <a 
-                            href="https://www.facebook.com/profile.php?id=61554985716749" 
-                            target="_blank" 
-                            rel="noopener noreferrer" 
-                            class="inline-flex items-center gap-2 px-4 py-3 bg-[#1877F2] text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0d6efd]/90"
-                        >
-                            <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-                                <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
-                            </svg>
-                            <span class="font-medium">Obserwuj</span>
+                <!-- Mobile Menu -->
+                <div id="mobile-menu" 
+                     class="fixed inset-x-0 top-[64px] bg-gradient-to-b from-primary-900/95 to-primary-800/95 backdrop-blur-md lg:hidden opacity-0 -translate-y-2 invisible transition-all duration-300 ease-out p-4 shadow-lg z-50"
+                     aria-hidden="true"
+                     role="dialog"
+                     aria-modal="true"
+                     aria-label="Menu mobilne"
+                >
+                    <nav class="space-y-4" aria-label="Menu mobilne">
+                        <a href="/" class="block w-full px-4 py-3 text-primary-100 hover:text-white hover:bg-white/10 rounded-xl transition-colors">
+                            Strona główna
                         </a>
-                        <a 
-                            href="/kontakt" 
-                            class="inline-flex items-center gap-2 px-4 py-3 bg-accent-500 text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-600"
-                        >
-                            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
-                            </svg>
-                            <span class="font-medium">Kontakt</span>
+                        <a href="/produkty" class="block w-full px-4 py-3 text-primary-100 hover:text-white hover:bg-white/10 rounded-xl transition-colors">
+                            Produkty
                         </a>
-                    </div>
-                </nav>
-            </div>
-        </header>
-
-        <!-- Spacer for fixed header -->
-        <div class="h-16"></div>
-
-        <main transition:animate="slide">
-            <slot />
-        </main>
-
-        <!-- Footer -->
-        <footer class="bg-primary-900 pt-20 pb-10">
-            <div class="container mx-auto px-4">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
-                    <!-- Brand & Description -->
-                    <div class="space-y-6">
-                        <h3 class="text-2xl font-display font-bold text-white">ANIMALS</h3>
-                        <p class="text-primary-200 leading-relaxed">
-                            Dostarczamy najwyższej jakości karmę i akcesoria dla Twojego pupila, wspierając jego zdrowie i szczęście każdego dnia.
-                        </p>
-                        <div class="flex gap-4">
-                            <a href="https://www.facebook.com/profile.php?id=61554985716749" class="text-primary-200 hover:text-white transition-colors">
-                                <span class="sr-only">Facebook</span>
-                                <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                        <a href="/kwalifikacje" class="block w-full px-4 py-3 text-primary-100 hover:text-white hover:bg-white/10 rounded-xl transition-colors">
+                            Kwalifikacje
+                        </a>
+                        <a href="/porady" class="block w-full px-4 py-3 text-primary-100 hover:text-white hover:bg-white/10 rounded-xl transition-colors">
+                            Porady
+                        </a>
+                        <!-- Social and Contact buttons -->
+                        <div class="pt-4 flex flex-col items-start gap-3">
+                            <a 
+                                href="https://www.facebook.com/profile.php?id=61554985716749" 
+                                target="_blank" 
+                                rel="noopener noreferrer" 
+                                class="inline-flex items-center gap-2 px-4 py-3 bg-[#1877F2] text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#0d6efd]/90"
+                            >
+                                <svg class="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
                                     <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
                                 </svg>
+                                <span class="font-medium">Obserwuj</span>
                             </a>
+                            <a 
+                                href="/kontakt" 
+                                class="inline-flex items-center gap-2 px-4 py-3 bg-accent-500 text-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 hover:-translate-y-0.5 hover:bg-accent-600"
+                            >
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
+                                </svg>
+                                <span class="font-medium">Kontakt</span>
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+            </header>
+
+            <!-- Spacer for fixed header -->
+            <div class="h-16"></div>
+
+            <!-- Main Content -->
+            <main class="flex-grow" transition:animate="fade">
+                <slot />
+            </main>
+
+            <footer class="bg-primary-900 pt-20 pb-10" transition:animate="slide">
+                <div class="container mx-auto px-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+                        <!-- Brand & Description -->
+                        <div class="space-y-6">
+                            <h3 class="text-2xl font-display font-bold text-white">ANIMALS</h3>
+                            <p class="text-primary-200 leading-relaxed">
+                                Dostarczamy najwyższej jakości karmę i akcesoria dla Twojego pupila, wspierając jego zdrowie i szczęście każdego dnia.
+                            </p>
+                            <div class="flex gap-4">
+                                <a href="https://www.facebook.com/profile.php?id=61554985716749" class="text-primary-200 hover:text-white transition-colors">
+                                    <span class="sr-only">Facebook</span>
+                                    <svg class="w-6 h-6" fill="currentColor" viewBox="0 0 24 24">
+                                        <path d="M22 12c0-5.523-4.477-10-10-10S2 6.477 2 12c0 4.991 3.657 9.128 8.438 9.878v-6.987h-2.54V12h2.54V9.797c0-2.506 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562V12h2.773l-.443 2.89h-2.33v6.988C18.343 21.128 22 16.991 22 12z"/>
+                                    </svg>
+                                </a>
+                            </div>
+                        </div>
+
+                        <!-- Quick Links -->
+                        <div>
+                            <h3 class="text-lg font-bold text-white/90 mb-6">Szybkie linki</h3>
+                            <ul class="space-y-4">
+                                <li>
+                                    <a href="/produkty" class="text-primary-200 hover:text-white transition-colors">Produkty</a>
+                                </li>
+                                <li>
+                                    <a href="/kwalifikacje" class="text-primary-200 hover:text-white transition-colors">Kwalifikacje</a>
+                                </li>
+                                <li>
+                                    <a href="/porady" class="text-primary-200 hover:text-white transition-colors">Porady</a>
+                                </li>
+                                <li>
+                                    <a href="/kontakt" class="text-primary-200 hover:text-white transition-colors">Kontakt</a>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Contact Info -->
+                        <div>
+                            <h3 class="text-lg font-bold text-white/90 mb-6">Kontakt</h3>
+                            <ul class="space-y-4 text-primary-200">
+                                <li class="flex items-start gap-3">
+                                    <svg class="w-6 h-6 text-accent-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                    </svg>
+                                    <div>
+                                        <p>ul. Polska 5</p>
+                                        <p>67-200 Głogów</p>
+                                    </div>
+                                </li>
+                                <li class="flex items-center gap-3">
+                                    <svg class="w-6 h-6 text-accent-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
+                                    </svg>
+                                    <span>886 147 831</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <!-- Hours -->
+                        <div>
+                            <h3 class="text-lg font-bold text-white/90 mb-6">Godziny otwarcia</h3>
+                            <ul class="space-y-3 text-primary-200">
+                                <li class="flex justify-between">
+                                    <span>Poniedziałek - Piątek</span>
+                                    <span>9:00 - 18:00</span>
+                                </li>
+                                <li class="flex justify-between">
+                                    <span>Sobota</span>
+                                    <span>9:00 - 14:00</span>
+                                </li>
+                                <li class="flex justify-between">
+                                    <span>Niedziela</span>
+                                    <span>Zamknięte</span>
+                                </li>
+                            </ul>
                         </div>
                     </div>
 
-                    <!-- Quick Links -->
-                    <div>
-                        <h3 class="text-lg font-bold text-white/90 mb-6">Szybkie linki</h3>
-                        <ul class="space-y-4">
-                            <li>
-                                <a href="/produkty" class="text-primary-200 hover:text-white transition-colors">Produkty</a>
-                            </li>
-                            <li>
-                                <a href="/kwalifikacje" class="text-primary-200 hover:text-white transition-colors">Kwalifikacje</a>
-                            </li>
-                            <li>
-                                <a href="/porady" class="text-primary-200 hover:text-white transition-colors">Porady</a>
-                            </li>
-                            <li>
-                                <a href="/kontakt" class="text-primary-200 hover:text-white transition-colors">Kontakt</a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Contact Info -->
-                    <div>
-                        <h3 class="text-lg font-bold text-white/90 mb-6">Kontakt</h3>
-                        <ul class="space-y-4 text-primary-200">
-                            <li class="flex items-start gap-3">
-                                <svg class="w-6 h-6 text-accent-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z"/>
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"/>
-                                </svg>
-                                <div>
-                                    <p>ul. Polska 5</p>
-                                    <p>67-200 Głogów</p>
-                                </div>
-                            </li>
-                            <li class="flex items-center gap-3">
-                                <svg class="w-6 h-6 text-accent-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"/>
-                                </svg>
-                                <span>886 147 831</span>
-                            </li>
-                        </ul>
-                    </div>
-
-                    <!-- Hours -->
-                    <div>
-                        <h3 class="text-lg font-bold text-white/90 mb-6">Godziny otwarcia</h3>
-                        <ul class="space-y-3 text-primary-200">
-                            <li class="flex justify-between">
-                                <span>Poniedziałek - Piątek</span>
-                                <span>9:00 - 18:00</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>Sobota</span>
-                                <span>9:00 - 14:00</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>Niedziela</span>
-                                <span>Zamknięte</span>
-                            </li>
-                        </ul>
+                    <!-- Bottom Bar -->
+                    <div class="pt-8 border-t border-primary-800">
+                        <div class="flex flex-col md:flex-row justify-between items-center gap-4">
+                            <p class="text-primary-300 text-sm">
+                                &copy; 2024 ANIMALS. Wszelkie prawa zastrzeżone.
+                            </p>
+                        </div>
                     </div>
                 </div>
+            </footer>
 
-                <!-- Bottom Bar -->
-                <div class="pt-8 border-t border-primary-800">
-                    <div class="flex flex-col md:flex-row justify-between items-center gap-4">
-                        <p class="text-primary-300 text-sm">
-                            &copy; 2024 ANIMALS. Wszelkie prawa zastrzeżone.
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </footer>
+            <WhatsAppButton />
 
-        <WhatsAppButton />
+            <!-- Mobile Menu Script -->
+            <script>
+                class MobileMenu {
+                    private static instance: MobileMenu | null = null;
+                    private button: HTMLElement | null;
+                    private menu: HTMLElement | null;
+                    private menuIcon: HTMLElement | null;
+                    private closeIcon: HTMLElement | null;
+                    private isTransitioning: boolean = false;
+                    private boundEventListeners: { [key: string]: EventListener } = {};
 
-        <!-- Mobile Menu Script -->
-        <script>
-            function setupMobileMenu() {
-                console.log('Setting up mobile menu...'); // Initial setup log
-                
-                const button = document.getElementById('mobile-menu-button');
-                console.log('Button found:', button); // Log button element
-                
-                const menu = document.getElementById('mobile-menu');
-                console.log('Menu found:', menu); // Log menu element
-                
-                const menuIcon = document.querySelector('.mobile-menu-icon');
-                console.log('Menu icon found:', menuIcon); // Log menu icon
-                
-                const closeIcon = document.querySelector('.mobile-menu-close');
-                console.log('Close icon found:', closeIcon); // Log close icon
+                    constructor() {
+                        // Singleton pattern to prevent multiple instances
+                        if (MobileMenu.instance) {
+                            return MobileMenu.instance;
+                        }
+                        MobileMenu.instance = this;
 
-                if (!button || !menu || !menuIcon || !closeIcon) {
-                    console.error('Missing elements:', { button, menu, menuIcon, closeIcon });
-                    return;
-                }
+                        this.button = document.getElementById('mobile-menu-button');
+                        this.menu = document.getElementById('mobile-menu');
+                        this.menuIcon = document.querySelector('.mobile-menu-icon');
+                        this.closeIcon = document.querySelector('.mobile-menu-close');
+                        
+                        this.init();
+                    }
 
-                // Clean up old event listeners
-                const newButton = button.cloneNode(true) as HTMLElement;
-                console.log('Created new button:', newButton);
-                button.parentNode?.replaceChild(newButton, button);
-                console.log('Replaced old button with new button');
+                    private init(): void {
+                        if (!this.validateElements()) return;
+                        this.removeExistingListeners();
+                        this.setupEventListeners();
+                    }
 
-                function closeMenu() {
-                    console.log('Closing menu...');
-                    menu.classList.add('hidden');
-                    menuIcon.classList.remove('hidden');
-                    closeIcon.classList.add('hidden');
-                    newButton.setAttribute('aria-expanded', 'false');
-                    document.body.style.overflow = '';
-                }
+                    private removeExistingListeners(): void {
+                        // Remove any existing listeners before adding new ones
+                        Object.entries(this.boundEventListeners).forEach(([event, listener]) => {
+                            document.removeEventListener(event, listener);
+                        });
+                        this.boundEventListeners = {};
+                    }
 
-                function toggleMenu() {
-                    console.log('Toggle menu clicked');
-                    const isExpanded = newButton.getAttribute('aria-expanded') === 'true';
-                    console.log('Menu is expanded:', isExpanded);
-                    
-                    if (isExpanded) {
-                        closeMenu();
-                    } else {
-                        console.log('Opening menu...');
-                        menu.classList.remove('hidden');
-                        menuIcon.classList.add('hidden');
-                        closeIcon.classList.remove('hidden');
-                        newButton.setAttribute('aria-expanded', 'true');
+                    private validateElements(): boolean {
+                        if (!this.button || !this.menu || !this.menuIcon || !this.closeIcon) {
+                            console.error('Missing mobile menu elements:', {
+                                button: this.button,
+                                menu: this.menu,
+                                menuIcon: this.menuIcon,
+                                closeIcon: this.closeIcon
+                            });
+                            return false;
+                        }
+                        return true;
+                    }
+
+                    private setupEventListeners(): void {
+                        // Button click with stopPropagation
+                        this.button?.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            this.toggleMenu();
+                        });
+
+                        // Prevent clicks inside menu from closing it
+                        this.menu?.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                        });
+
+                        // Close on outside click
+                        this.boundEventListeners.click = (e: Event) => {
+                            if (this.isOpen() && !this.isMenuClick(e.target as Node)) {
+                                console.log('Closing menu due to outside click');
+                                this.close();
+                            }
+                        };
+                        document.addEventListener('click', this.boundEventListeners.click);
+
+                        // Close on escape key
+                        this.boundEventListeners.keydown = (e: KeyboardEvent) => {
+                            if (e.key === 'Escape' && this.isOpen()) {
+                                console.log('Closing menu due to escape key');
+                                this.close();
+                            }
+                        };
+                        document.addEventListener('keydown', this.boundEventListeners.keydown);
+
+                        // Close on resize
+                        this.boundEventListeners.resize = () => {
+                            if (window.innerWidth >= 1024 && this.isOpen()) {
+                                console.log('Closing menu due to resize');
+                                this.close();
+                            }
+                        };
+                        window.addEventListener('resize', this.boundEventListeners.resize);
+
+                        // Close on navigation
+                        this.boundEventListeners.navigation = () => {
+                            if (this.isOpen()) {
+                                console.log('Closing menu due to navigation');
+                                this.close();
+                            }
+                        };
+                        document.addEventListener('astro:after-navigation', this.boundEventListeners.navigation);
+                    }
+
+                    private isOpen(): boolean {
+                        return this.button?.getAttribute('aria-expanded') === 'true';
+                    }
+
+                    private isMenuClick(target: Node): boolean {
+                        return (
+                            this.button?.contains(target) ||
+                            this.menu?.contains(target)
+                        );
+                    }
+
+                    private toggleMenu(): void {
+                        console.log('Toggle menu called, current state:', this.isOpen());
+                        this.isOpen() ? this.close() : this.open();
+                    }
+
+                    private async open(): Promise<void> {
+                        if (this.isTransitioning) {
+                            console.log('Ignoring open request - menu is transitioning');
+                            return;
+                        }
+                        console.log('Opening menu');
+                        this.isTransitioning = true;
+
+                        this.button?.setAttribute('aria-expanded', 'true');
+                        this.menu?.setAttribute('aria-hidden', 'false');
+                        this.menuIcon?.classList.add('hidden');
+                        this.closeIcon?.classList.remove('hidden');
+                        
+                        this.menu?.classList.remove('invisible');
+                        await new Promise(resolve => requestAnimationFrame(resolve));
+                        this.menu?.classList.remove('opacity-0', '-translate-y-2');
+                        
                         document.body.style.overflow = 'hidden';
+
+                        setTimeout(() => {
+                            const firstFocusable = this.menu?.querySelector('a, button') as HTMLElement;
+                            firstFocusable?.focus();
+                            this.isTransitioning = false;
+                            console.log('Menu opened successfully');
+                        }, 300);
+                    }
+
+                    private async close(): Promise<void> {
+                        if (this.isTransitioning) {
+                            console.log('Ignoring close request - menu is transitioning');
+                            return;
+                        }
+                        console.log('Closing menu');
+                        this.isTransitioning = true;
+
+                        this.button?.setAttribute('aria-expanded', 'false');
+                        this.menu?.setAttribute('aria-hidden', 'true');
+                        this.menuIcon?.classList.remove('hidden');
+                        this.closeIcon?.classList.add('hidden');
+                        
+                        this.menu?.classList.add('opacity-0', '-translate-y-2');
+                        document.body.style.overflow = '';
+
+                        await new Promise(resolve => setTimeout(resolve, 300));
+                        this.menu?.classList.add('invisible');
+                        this.isTransitioning = false;
+                        this.button?.focus();
+                        console.log('Menu closed successfully');
+                    }
+
+                    // Clean up method
+                    public destroy(): void {
+                        this.removeExistingListeners();
+                        MobileMenu.instance = null;
                     }
                 }
 
-                // Add click event listener
-                newButton.addEventListener('click', toggleMenu);
-                console.log('Added click event listener to button');
+                let mobileMenuInstance: MobileMenu | null = null;
 
-                // Close menu when clicking outside
-                document.addEventListener('click', (event) => {
-                    const target = event.target as Node;
-                    if (!newButton.contains(target) && !menu.contains(target)) {
-                        closeMenu();
+                // Initialize mobile menu
+                function initMobileMenu() {
+                    console.log('Initializing mobile menu');
+                    if (mobileMenuInstance) {
+                        console.log('Destroying existing mobile menu instance');
+                        mobileMenuInstance.destroy();
                     }
-                });
+                    mobileMenuInstance = new MobileMenu();
+                }
 
-                // Close menu on window resize
-                window.addEventListener('resize', () => {
-                    if (window.innerWidth >= 1024) {
-                        closeMenu();
-                    }
-                });
-
-                // Close menu on navigation
-                document.addEventListener('astro:after-navigation', closeMenu);
-            }
-
-            console.log('Script loaded, checking document state:', document.readyState);
-            
-            if (document.readyState === 'complete' || document.readyState === 'interactive') {
-                console.log('Document ready, setting up menu immediately');
-                setupMobileMenu();
-            } else {
-                console.log('Document not ready, adding DOMContentLoaded listener');
-                document.addEventListener('DOMContentLoaded', setupMobileMenu);
-            }
-            
-            document.addEventListener('astro:page-load', () => {
-                console.log('astro:page-load event fired, setting up menu');
-                setupMobileMenu();
-            });
-        </script>
+                if (document.readyState === 'complete' || document.readyState === 'interactive') {
+                    initMobileMenu();
+                } else {
+                    document.addEventListener('DOMContentLoaded', initMobileMenu);
+                }
+                
+                document.addEventListener('astro:page-load', initMobileMenu);
+            </script>
+        </div>
     </body>
 </html>
 
@@ -347,5 +457,68 @@ const { title, description } = Astro.props;
 
     body {
         overflow-x: hidden;
+    }
+
+    /* View Transitions */
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+        animation: none;
+        mix-blend-mode: normal;
+    }
+
+    /* Ensure transitions work with forced-colors */
+    @media (prefers-reduced-motion: reduce) {
+        ::view-transition-group(*),
+        ::view-transition-old(*),
+        ::view-transition-new(*) {
+            animation: none !important;
+        }
+    }
+
+    /* Fade transition */
+    @keyframes fade-in {
+        from { opacity: 0; }
+        to { opacity: 1; }
+    }
+
+    @keyframes fade-out {
+        from { opacity: 1; }
+        to { opacity: 0; }
+    }
+
+    /* Slide transition */
+    @keyframes slide-in {
+        from { transform: translateY(-10px); opacity: 0; }
+        to { transform: translateY(0); opacity: 1; }
+    }
+
+    @keyframes slide-out {
+        from { transform: translateY(0); opacity: 1; }
+        to { transform: translateY(10px); opacity: 0; }
+    }
+
+    /* Define transition animations */
+    [data-astro-transition-scope] {
+        animation-fill-mode: both;
+        animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+        animation-duration: 300ms;
+    }
+
+    /* Fade animation */
+    [data-astro-transition="fade"] {
+        animation: fade-in;
+    }
+
+    [data-astro-transition="fade"].astro-transition-out {
+        animation: fade-out;
+    }
+
+    /* Slide animation */
+    [data-astro-transition="slide"] {
+        animation: slide-in;
+    }
+
+    [data-astro-transition="slide"].astro-transition-out {
+        animation: slide-out;
     }
 </style>
