@@ -84,15 +84,18 @@ const { title, description } = Astro.props;
                             </div>
 
                             <!-- Mobile Menu Button -->
-                            <button 
-                                id="mobile-menu-button" 
-                                class="lg:hidden p-2 rounded-lg text-white hover:bg-white/10 transition-colors relative z-50"
-                                aria-label="Menu"
+                            <button
+                                id="mobile-menu-button"
+                                class="lg:hidden"
+                                aria-label="Menu mobilne"
                                 aria-expanded="false"
+                                data-menu-button
                             >
-                                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path class="mobile-menu-icon block" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
-                                    <path class="mobile-menu-close hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+                                <svg class="mobile-menu-icon w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                                </svg>
+                                <svg class="mobile-menu-close hidden w-6 h-6 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                                 </svg>
                             </button>
                         </div>
@@ -100,12 +103,14 @@ const { title, description } = Astro.props;
                 </div>
 
                 <!-- Mobile Menu -->
-                <div id="mobile-menu" 
-                     class="fixed inset-x-0 top-[64px] bg-gradient-to-b from-primary-900/95 to-primary-800/95 backdrop-blur-md lg:hidden opacity-0 -translate-y-2 invisible transition-all duration-300 ease-out p-4 shadow-lg z-50"
-                     aria-hidden="true"
-                     role="dialog"
-                     aria-modal="true"
-                     aria-label="Menu mobilne"
+                <div 
+                    id="mobile-menu" 
+                    class="fixed inset-x-0 top-[64px] bg-gradient-to-b from-primary-900/95 to-primary-800/95 backdrop-blur-md lg:hidden opacity-0 -translate-y-2 invisible transition-all duration-300 ease-out p-4 shadow-lg z-50"
+                    aria-hidden="true"
+                    role="dialog"
+                    aria-modal="true"
+                    aria-label="Menu mobilne"
+                    data-menu
                 >
                     <nav class="space-y-4" aria-label="Menu mobilne">
                         <a href="/" class="block w-full px-4 py-3 text-primary-100 hover:text-white hover:bg-white/10 rounded-xl transition-colors">
@@ -251,199 +256,94 @@ const { title, description } = Astro.props;
 
             <!-- Mobile Menu Script -->
             <script>
-                class MobileMenu {
-                    private static instance: MobileMenu | null = null;
-                    private button: HTMLElement | null;
-                    private menu: HTMLElement | null;
-                    private menuIcon: HTMLElement | null;
-                    private closeIcon: HTMLElement | null;
-                    private isTransitioning: boolean = false;
-                    private boundEventListeners: { [key: string]: EventListener } = {};
-
-                    constructor() {
-                        // Singleton pattern to prevent multiple instances
-                        if (MobileMenu.instance) {
-                            return MobileMenu.instance;
-                        }
-                        MobileMenu.instance = this;
-
-                        this.button = document.getElementById('mobile-menu-button');
-                        this.menu = document.getElementById('mobile-menu');
-                        this.menuIcon = document.querySelector('.mobile-menu-icon');
-                        this.closeIcon = document.querySelector('.mobile-menu-close');
+                document.addEventListener('astro:page-load', () => {
+                    const button = document.querySelector('[data-menu-button]');
+                    const menu = document.querySelector('[data-menu]');
+                    const menuIcon = document.querySelector('.mobile-menu-icon');
+                    const closeIcon = document.querySelector('.mobile-menu-close');
+                    
+                    if (!button || !menu || !menuIcon || !closeIcon) return;
+                    
+                    let isOpen = false;
+                    let isTransitioning = false;
+                    
+                    const open = () => {
+                        if (isTransitioning) return;
+                        isTransitioning = true;
+                        isOpen = true;
                         
-                        this.init();
-                    }
-
-                    private init(): void {
-                        if (!this.validateElements()) return;
-                        this.removeExistingListeners();
-                        this.setupEventListeners();
-                    }
-
-                    private removeExistingListeners(): void {
-                        // Remove any existing listeners before adding new ones
-                        Object.entries(this.boundEventListeners).forEach(([event, listener]) => {
-                            document.removeEventListener(event, listener);
-                        });
-                        this.boundEventListeners = {};
-                    }
-
-                    private validateElements(): boolean {
-                        if (!this.button || !this.menu || !this.menuIcon || !this.closeIcon) {
-                            console.error('Missing mobile menu elements:', {
-                                button: this.button,
-                                menu: this.menu,
-                                menuIcon: this.menuIcon,
-                                closeIcon: this.closeIcon
-                            });
-                            return false;
-                        }
-                        return true;
-                    }
-
-                    private setupEventListeners(): void {
-                        // Button click with stopPropagation
-                        this.button?.addEventListener('click', (e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            this.toggleMenu();
-                        });
-
-                        // Prevent clicks inside menu from closing it
-                        this.menu?.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                        });
-
-                        // Close on outside click
-                        this.boundEventListeners.click = (e: Event) => {
-                            if (this.isOpen() && !this.isMenuClick(e.target as Node)) {
-                                console.log('Closing menu due to outside click');
-                                this.close();
-                            }
-                        };
-                        document.addEventListener('click', this.boundEventListeners.click);
-
-                        // Close on escape key
-                        this.boundEventListeners.keydown = (e: KeyboardEvent) => {
-                            if (e.key === 'Escape' && this.isOpen()) {
-                                console.log('Closing menu due to escape key');
-                                this.close();
-                            }
-                        };
-                        document.addEventListener('keydown', this.boundEventListeners.keydown);
-
-                        // Close on resize
-                        this.boundEventListeners.resize = () => {
-                            if (window.innerWidth >= 1024 && this.isOpen()) {
-                                console.log('Closing menu due to resize');
-                                this.close();
-                            }
-                        };
-                        window.addEventListener('resize', this.boundEventListeners.resize);
-
-                        // Close on navigation
-                        this.boundEventListeners.navigation = () => {
-                            if (this.isOpen()) {
-                                console.log('Closing menu due to navigation');
-                                this.close();
-                            }
-                        };
-                        document.addEventListener('astro:after-navigation', this.boundEventListeners.navigation);
-                    }
-
-                    private isOpen(): boolean {
-                        return this.button?.getAttribute('aria-expanded') === 'true';
-                    }
-
-                    private isMenuClick(target: Node): boolean {
-                        return (
-                            this.button?.contains(target) ||
-                            this.menu?.contains(target)
-                        );
-                    }
-
-                    private toggleMenu(): void {
-                        console.log('Toggle menu called, current state:', this.isOpen());
-                        this.isOpen() ? this.close() : this.open();
-                    }
-
-                    private async open(): Promise<void> {
-                        if (this.isTransitioning) {
-                            console.log('Ignoring open request - menu is transitioning');
-                            return;
-                        }
-                        console.log('Opening menu');
-                        this.isTransitioning = true;
-
-                        this.button?.setAttribute('aria-expanded', 'true');
-                        this.menu?.setAttribute('aria-hidden', 'false');
-                        this.menuIcon?.classList.add('hidden');
-                        this.closeIcon?.classList.remove('hidden');
+                        button.setAttribute('aria-expanded', 'true');
+                        menu.setAttribute('aria-hidden', 'false');
+                        menuIcon.classList.add('hidden');
+                        closeIcon.classList.remove('hidden');
                         
-                        this.menu?.classList.remove('invisible');
-                        await new Promise(resolve => requestAnimationFrame(resolve));
-                        this.menu?.classList.remove('opacity-0', '-translate-y-2');
+                        menu.classList.remove('invisible');
+                        requestAnimationFrame(() => {
+                            menu.classList.remove('opacity-0', '-translate-y-2');
+                            document.body.style.overflow = 'hidden';
+                        });
                         
-                        document.body.style.overflow = 'hidden';
-
                         setTimeout(() => {
-                            const firstFocusable = this.menu?.querySelector('a, button') as HTMLElement;
-                            firstFocusable?.focus();
-                            this.isTransitioning = false;
-                            console.log('Menu opened successfully');
+                            isTransitioning = false;
                         }, 300);
-                    }
-
-                    private async close(): Promise<void> {
-                        if (this.isTransitioning) {
-                            console.log('Ignoring close request - menu is transitioning');
-                            return;
-                        }
-                        console.log('Closing menu');
-                        this.isTransitioning = true;
-
-                        this.button?.setAttribute('aria-expanded', 'false');
-                        this.menu?.setAttribute('aria-hidden', 'true');
-                        this.menuIcon?.classList.remove('hidden');
-                        this.closeIcon?.classList.add('hidden');
+                    };
+                    
+                    const close = () => {
+                        if (isTransitioning) return;
+                        isTransitioning = true;
+                        isOpen = false;
                         
-                        this.menu?.classList.add('opacity-0', '-translate-y-2');
+                        button.setAttribute('aria-expanded', 'false');
+                        menu.setAttribute('aria-hidden', 'true');
+                        menuIcon.classList.remove('hidden');
+                        closeIcon.classList.add('hidden');
+                        
+                        menu.classList.add('opacity-0', '-translate-y-2');
                         document.body.style.overflow = '';
-
-                        await new Promise(resolve => setTimeout(resolve, 300));
-                        this.menu?.classList.add('invisible');
-                        this.isTransitioning = false;
-                        this.button?.focus();
-                        console.log('Menu closed successfully');
-                    }
-
-                    // Clean up method
-                    public destroy(): void {
-                        this.removeExistingListeners();
-                        MobileMenu.instance = null;
-                    }
-                }
-
-                let mobileMenuInstance: MobileMenu | null = null;
-
-                // Initialize mobile menu
-                function initMobileMenu() {
-                    console.log('Initializing mobile menu');
-                    if (mobileMenuInstance) {
-                        console.log('Destroying existing mobile menu instance');
-                        mobileMenuInstance.destroy();
-                    }
-                    mobileMenuInstance = new MobileMenu();
-                }
-
-                if (document.readyState === 'complete' || document.readyState === 'interactive') {
-                    initMobileMenu();
-                } else {
-                    document.addEventListener('DOMContentLoaded', initMobileMenu);
-                }
-                
-                document.addEventListener('astro:page-load', initMobileMenu);
+                        
+                        setTimeout(() => {
+                            menu.classList.add('invisible');
+                            isTransitioning = false;
+                        }, 300);
+                    };
+                    
+                    // Toggle menu
+                    button.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        isOpen ? close() : open();
+                    });
+                    
+                    // Close on navigation
+                    document.addEventListener('astro:after-navigation', close);
+                    
+                    // Close on resize
+                    window.addEventListener('resize', () => {
+                        if (window.innerWidth >= 1024 && isOpen) {
+                            close();
+                        }
+                    });
+                    
+                    // Close on escape
+                    document.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape' && isOpen) {
+                            close();
+                        }
+                    });
+                    
+                    // Close on outside click
+                    document.addEventListener('click', (e) => {
+                        const target = e.target as Node;
+                        if (isOpen && !button.contains(target) && !menu.contains(target)) {
+                            close();
+                        }
+                    });
+                    
+                    // Prevent menu clicks from bubbling
+                    menu.addEventListener('click', (e) => {
+                        e.stopPropagation();
+                    });
+                });
             </script>
         </div>
     </body>
