@@ -3,7 +3,7 @@ title: "Sklep zoologiczny w Głogowie - Wybór zdrowej karmy dla Twojego pupila 
 date: "2024-03-20"
 excerpt: "Dowiedz się więcej o naszym sklepie zoologicznym w Głogowie i oferowanym asortymencie karm premium"
 author: "Magdalena Radziejewska"
-image: "/images/animalsss.jpg"
+image: "animalsss"
 ---
 
 

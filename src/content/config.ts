@@ -1,4 +1,8 @@
 import { defineCollection, z } from 'astro:content';
+import { blogImages } from '../assets/blog';
+
+// Create a schema for valid image keys
+const imageKeys = z.enum(Object.keys(blogImages) as [string, ...string[]]);
 
 const poradyCollection = defineCollection({
   schema: z.object({
@@ -6,7 +10,7 @@ const poradyCollection = defineCollection({
     date: z.string(),
     excerpt: z.string(),
     author: z.string(),
-    image: z.string(),
+    image: imageKeys,
   })
 });
 

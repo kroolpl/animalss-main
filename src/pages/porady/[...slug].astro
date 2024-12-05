@@ -1,134 +1,202 @@
 ---
-import { Image } from 'astro:assets';
 import { getCollection } from 'astro:content';
+import type { CollectionEntry } from 'astro:content';
 import Layout from '../../layouts/Layout.astro';
+import BlogImage from '../../components/BlogImage.astro';
+import { Breadcrumbs } from 'astro-breadcrumbs';
+
+// Import the default CSS or customize your own styles
+import 'astro-breadcrumbs/breadcrumbs.css';
 
 export async function getStaticPaths() {
-  const porady = await getCollection('porady');
-  return porady.map(entry => ({
-    params: { slug: entry.slug },
-    props: { entry, recommendations: porady.filter(p => p.slug !== entry.slug).slice(0, 3) },
+  const poradyEntries = await getCollection('porady');
+  return poradyEntries.map(entry => ({
+    params: { slug: entry.slug }, 
+    props: { entry },
   }));
 }
 
-const { entry, recommendations } = Astro.props;
+const { entry } = Astro.props;
 const { Content } = await entry.render();
+
+let recommendedArticles: CollectionEntry<'porady'>[] = [];
+try {
+    const allPorady = await getCollection('porady');
+    // Get 3 random articles excluding current one
+    recommendedArticles = allPorady
+        .filter(p => p.slug !== entry.slug)
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 3);
+} catch (error) {
+    console.error('Error fetching recommended articles:', error);
+}
 ---
 
-<Layout title={`${entry.data.title} - ANIMALS`}>
-  <article>
-    <!-- Hero Section -->
-    <div class="relative bg-gradient-to-b from-primary-900 to-primary-800 text-white">
-      <div class="absolute inset-0 bg-[url('/pattern.svg')] opacity-5"></div>
-      <div class="container mx-auto px-4 py-24 relative">
-        <div class="max-w-4xl mx-auto">
-          <div class="flex items-center gap-4 mb-8 text-primary-200">
-            <time>{new Date(entry.data.date).toLocaleDateString('pl-PL', {
-              day: 'numeric',
-              month: 'long',
-              year: 'numeric'
-            })}</time>
-            <span class="w-1 h-1 bg-primary-400 rounded-full"></span>
-            <span>{entry.data.author}</span>
-          </div>
-          <h1 
-            class="text-4xl md:text-5xl font-display font-bold mb-6"
-            transition:name={`title-${entry.slug}`}
-          >
-            {entry.data.title}
-          </h1>
-          <p class="text-xl text-primary-100">{entry.data.excerpt}</p>
+<Layout title={`${entry.data.title} - ANIMALS`} description={entry.data.excerpt}>
+    <!-- Hero Section with Background Image -->
+    <div class="relative min-h-[50vh] max-h-[600px] flex items-center">
+        <!-- Background Image Container -->
+        <div class="absolute inset-0 z-0">
+            <div class="relative h-full">
+                <BlogImage 
+                    imageKey={entry.data.image}
+                    alt={entry.data.title}
+                    class="w-full h-full object-cover object-center"
+                    transition:name={`image-${entry.slug}`}
+                />
+                <!-- Gradient Overlay -->
+                <div class="absolute inset-0 bg-gradient-to-b from-primary-900/70 via-primary-900/80 to-primary-900/90"></div>
+            </div>
         </div>
-      </div>
+
+        <!-- Content -->
+        <div class="container mx-auto px-4 py-12 relative z-10 mt-16">
+            <div class="max-w-3xl mx-auto text-white">
+                <!-- Add Breadcrumbs -->
+                <nav class="mb-6" aria-label="breadcrumbs">
+                    <Breadcrumbs>
+                        <svg 
+                            slot="separator"
+                            xmlns="http://www.w3.org/2000/svg" 
+                            width="24" 
+                            height="24" 
+                            viewBox="0 0 24 24" 
+                            fill="none" 
+                            stroke="currentColor" 
+                            stroke-width="2" 
+                            stroke-linecap="round" 
+                            stroke-linejoin="round"
+                            class="w-4 h-4 text-primary-200"
+                        >
+                            <polyline points="9 18 15 12 9 6"></polyline>
+                        </svg>
+                        <svg
+                            slot="index"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            viewBox="0 0 24 24"
+                            fill="none"
+                            stroke="currentColor"
+                            stroke-width="2"
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            class="w-4 h-4"
+                        >
+                            <path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+                            <polyline points="9 22 9 12 15 12 15 22"></polyline>
+                        </svg>
+                    </Breadcrumbs>
+                </nav>
+
+                <div class="flex items-center gap-4 mb-6">
+                    <time>{new Date(entry.data.date).toLocaleDateString('pl-PL', {
+                        day: 'numeric',
+                        month: 'long',
+                        year: 'numeric'
+                    })}</time>
+                    <span class="w-1 h-1 bg-primary-200 rounded-full"></span>
+                    <span>{entry.data.author}</span>
+                </div>
+                <h1 class="text-2xl md:text-3xl lg:text-4xl font-display font-bold mb-4 leading-tight">
+                    {entry.data.title}
+                </h1>
+                <p class="text-base md:text-lg text-primary-100/90 leading-relaxed">
+                    {entry.data.excerpt}
+                </p>
+            </div>
+        </div>
     </div>
 
-    <!-- Main Content -->
-    <div class="bg-gradient-to-b from-primary-50 to-white py-16">
-      <div class="container mx-auto px-4">
-        <div class="max-w-4xl mx-auto">
-          {entry.data.image && (
-            <div class="mb-16 -mt-32 rounded-2xl overflow-hidden shadow-xl">
-              <Image 
-                src={entry.data.image}
-                alt={entry.data.title}
-                width={1200}
-                height={630}
-                class="w-full aspect-[21/9] object-cover"
-                transition:name={`image-${entry.slug}`}
-                format="webp"
-                quality={80}
-                loading="eager"
-              />
-            </div>
-          )}
-          
-          <div class="prose prose-lg mx-auto">
-            <Content />
-          </div>
+    <!-- Article Content -->
+    <div class="bg-gradient-to-b from-primary-50 to-white">
+        <div class="container mx-auto px-4 py-16">
+            <article class="max-w-3xl mx-auto">
+                <div class="prose prose-lg max-w-none">
+                    <Content />
+                </div>
+            </article>
+        </div>
+    </div>
 
-          <!-- Recommended Articles -->
-          <div class="mt-16 pt-16 border-t border-primary-100">
-            <h2 class="text-3xl font-bold text-primary-900 mb-8 text-center">Polecane artykuły</h2>
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-              {recommendations.map((article) => (
-                <a 
-                  href={`/porady/${article.slug}`}
-                  class="group block bg-white rounded-xl overflow-hidden shadow hover:shadow-lg transition-all duration-300"
-                >
-                  {article.data.image && (
-                    <div class="aspect-[16/9] overflow-hidden">
-                      <Image 
-                        src={article.data.image}
-                        alt={article.data.title}
-                        width={400}
-                        height={225}
-                        class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
-                        format="webp"
-                        quality={80}
-                      />
+    <!-- Recommended Articles -->
+    {recommendedArticles.length > 0 && (
+        <div class="bg-primary-50/50">
+            <div class="container mx-auto px-4 py-16">
+                <div class="max-w-3xl mx-auto">
+                    <h2 class="text-2xl md:text-3xl font-display font-bold text-primary-900 mb-8">
+                        Polecane artykuły
+                    </h2>
+                    <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                        {recommendedArticles.map((article) => (
+                            <a 
+                                href={`/porady/${article.slug}`}
+                                class="group bg-white rounded-xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden flex flex-col"
+                            >
+                                <div class="aspect-[16/10] relative overflow-hidden">
+                                    <BlogImage 
+                                        imageKey={article.data.image}
+                                        alt={article.data.title}
+                                        class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500"
+                                    />
+                                    <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent"></div>
+                                </div>
+                                <div class="p-4 flex flex-col flex-grow">
+                                    <div class="flex items-center gap-2 text-xs text-primary-600 mb-2">
+                                        <time>{new Date(article.data.date).toLocaleDateString('pl-PL', {
+                                            day: 'numeric',
+                                            month: 'short',
+                                            year: 'numeric'
+                                        })}</time>
+                                        <span class="w-1 h-1 bg-primary-300 rounded-full"></span>
+                                        <span>{article.data.author}</span>
+                                    </div>
+                                    <h3 class="text-lg font-bold text-primary-900 group-hover:text-accent-500 transition-colors line-clamp-2 mb-2">
+                                        {article.data.title}
+                                    </h3>
+                                    <p class="text-sm text-primary-600 line-clamp-2 mb-3">
+                                        {article.data.excerpt}
+                                    </p>
+                                    <span class="mt-auto inline-flex items-center text-accent-500 text-sm font-medium">
+                                        Czytaj więcej
+                                        <svg class="w-4 h-4 ml-1 transform group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                                        </svg>
+                                    </span>
+                                </div>
+                            </a>
+                        ))}
                     </div>
-                  )}
-                  <div class="p-6">
-                    <h3 class="font-bold text-lg text-primary-900 mb-2 group-hover:text-accent-500 transition-colors duration-300">
-                      {article.data.title}
-                    </h3>
-                    <p class="text-primary-600 text-sm line-clamp-2">
-                      {article.data.excerpt}
-                    </p>
-                  </div>
-                </a>
-              ))}
+                </div>
             </div>
-          </div>
         </div>
-      </div>
-    </div>
-  </article>
+    )}
 </Layout>
 
-<style is:global>
-  .prose h2 {
-    margin-top: 2.5em;
-    margin-bottom: 1em;
-  }
-  .prose h3 {
-    margin-top: 2em;
-    margin-bottom: 0.8em;
-  }
-  .prose p {
-    margin-bottom: 1.5em;
-    line-height: 1.8;
-  }
-  .prose ul {
-    margin-top: 1.5em;
-    margin-bottom: 1.5em;
-  }
-  .prose li {
-    margin-top: 0.5em;
-    margin-bottom: 0.5em;
-  }
-  .prose hr {
-    margin: 3em 0;
-    border-color: #e2e8f0;
-  }
+<style>
+    /* Add custom breadcrumb styles */
+    :global(.breadcrumbs) {
+        --astro-breadcrumbs-separator-margin: 0 0.5rem;
+    }
+
+    :global(.breadcrumbs a) {
+        color: theme(colors.primary.100);
+        text-decoration: none;
+        transition: color 0.2s;
+    }
+
+    :global(.breadcrumbs a:hover) {
+        color: theme(colors.accent.400);
+    }
+
+    :global(.breadcrumbs [aria-current="page"]) {
+        color: theme(colors.accent.400);
+    }
+
+    .prose {
+        --tw-prose-headings: theme(colors.primary.900);
+        --tw-prose-body: theme(colors.primary.700);
+        --tw-prose-links: theme(colors.accent.500);
+        --tw-prose-bold: theme(colors.primary.900);
+    }
 </style> 

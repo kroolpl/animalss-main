@@ -3,7 +3,7 @@ title: "Najczęstsze błędy w karmieniu psów i kotów – czego unikać, by za
 date: "2024-03-20"
 excerpt: "Karmienie psów i kotów to jedna z kluczowych kwestii wpływających na ich zdrowie i samopoczucie."
 author: "Magdalena Radziejewska"
-image: "/images/kotpies.jpg"
+image: "kotpies"
 ---
 
 
