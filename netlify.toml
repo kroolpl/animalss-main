@@ -16,8 +16,8 @@
 
 # Force HTTPS
 [[redirects]]
-  from = "http://:domain/*"
-  to = "https://:domain/:splat"
+  from = "http://animals.glogow.pl/*"
+  to = "https://animals.glogow.pl/:splat"
   status = 301
   force = true
 
