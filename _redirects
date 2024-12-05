@@ -1,9 +1,9 @@
-# Redirect HTTP to HTTPS
-http://animals.glogow.pl/* https://animals.glogow.pl/:splat 301!
+# Redirect www to non-www
 http://www.animals.glogow.pl/* https://animals.glogow.pl/:splat 301!
+https://www.animals.glogow.pl/* https://animals.glogow.pl/:splat 301!
 
 # Redirect Netlify subdomain to primary domain
-https://animals-glogow.netlify.app/* https://animals.glogow.pl/:splat 301!
+https://aanimalsg.netlify.app/* https://animals.glogow.pl/:splat 301!
 
 # Force HTTPS
 /* https://:splat 301!
