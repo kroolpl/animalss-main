@@ -9,6 +9,8 @@ interface Props {
 }
 
 const { title, description, schema } = Astro.props;
+
+const canonicalURL = new URL(Astro.url.pathname, 'https://animals.glogow.pl').toString();
 ---
 
 <!doctype html>
@@ -23,6 +25,8 @@ const { title, description, schema } = Astro.props;
         <ViewTransitions fallback="swap" />
         <link rel="sitemap" href="/sitemap-index.xml" />
         {schema && <script type="application/ld+json">{schema}</script>}
+        <link rel="canonical" href={canonicalURL} />
+        <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
     </head>
     <body class="antialiased">
         <div class="flex min-h-screen flex-col">

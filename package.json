@@ -5,7 +5,7 @@
   "private": true,
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build && cp _redirects dist/_redirects",
+    "build": "astro build && cp _redirects netlify.toml dist/",
     "start": "astro dev",
     "preview": "astro preview",
     "astro": "astro"
